@@ -176,7 +176,7 @@ fn main() {
                 query_cursor = 0;
                 query.clear();
             }
-            Key::Alt('l') => {
+            Key::Alt('l') | Key::Char('\n') => {
                 let final_cursor = if query.is_empty() {
                     movement_cursor
                 } else {
@@ -207,23 +207,7 @@ fn main() {
                 query_cursor = 0;
                 query.clear();
             }
-            Key::Alt('\r') => {
-                let final_cursor = if query.is_empty() {
-                    movement_cursor
-                } else {
-                    query_cursor
-                };
-
-                if entries[final_cursor].is_dir() {
-                    current_path = entries[final_cursor].clone();
-
-                    write!(io::stderr(), "{}", current_path.display()).unwrap();
-                    io::stderr().flush().unwrap();
-
-                    break;
-                }
-            }
-            Key::Char('\n') => {
+            Key::Esc => {
                 write!(io::stderr(), "{}", current_path.display()).unwrap();
                 io::stderr().flush().unwrap();
 
@@ -252,7 +236,6 @@ fn main() {
                 query_cursor = 0;
             }
             Key::Ctrl('c') => break,
-            Key::Esc => break,
             _ => {}
         }
 
